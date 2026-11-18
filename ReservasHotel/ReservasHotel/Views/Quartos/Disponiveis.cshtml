@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ReservasHotel.Models.Quarto>
+@{
+    ViewData["Title"] = "Disponibilidade";
+    var entrada = (DateTime?)ViewBag.Entrada;
+    var saida = (DateTime?)ViewBag.Saida;
+}
+
+<h1>Quartos disponíveis</h1>
+
+<form asp-action="Disponiveis" method="get" class="row g-3 mb-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-3">
+        <label class="form-label">Entrada</label>
+        <input type="date" name="entrada" class="form-control" value="@entrada?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Saída</label>
+        <input type="date" name="saida" class="form-control" value="@saida?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary">Consultar</button>
+    </div>
+</form>
+
+@if (entrada != null && saida != null)
+{
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">Nenhum quarto disponível neste período.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Tipo</th>
+                    <th>Preço (diária)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Numero</td>
+                        <td>@item.TipoQuarto?.Nome</td>
+                        <td>@item.Preco.ToString("C2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

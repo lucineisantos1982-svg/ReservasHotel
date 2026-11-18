@@ -1,0 +1,82 @@
+﻿@model ReservasHotel.Models.Reserva
+@{
+    ViewData["Title"] = "Nova reserva";
+}
+
+<h1>Nova reserva</h1>
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="HospedeId" class="form-label">Hóspede</label>
+                <select asp-for="HospedeId" class="form-select" asp-items="ViewBag.Hospedes"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="QuartoId" class="form-label">Quarto</label>
+                <select asp-for="QuartoId" class="form-select">
+                    @foreach (var q in (List<ReservasHotel.Models.Quarto>)ViewBag.Quartos)
+                    {
+                        <option value="@q.Id"
+                                data-tipo="@q.TipoQuarto?.Nome"
+                                data-preco="@q.Preco.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                selected="@(q.Id == Model.QuartoId)">
+                            @q.Numero - @q.TipoQuarto?.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div id="infoQuarto" class="alert alert-info"></div>
+
+            <div class="mb-3">
+                <label asp-for="DataEntrada" class="form-label">Data de entrada</label>
+                <input asp-for="DataEntrada" class="form-control" />
+                <span asp-validation-for="DataEntrada" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DataSaida" class="form-label">Data de saída</label>
+                <input asp-for="DataSaida" class="form-control" />
+                <span asp-validation-for="DataSaida" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Reservar</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const quarto = document.getElementById('QuartoId');
+        const entrada = document.getElementById('DataEntrada');
+        const saida = document.getElementById('DataSaida');
+        const info = document.getElementById('infoQuarto');
+
+        function moeda(v) {
+            return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function atualizar() {
+            const opt = quarto.options[quarto.selectedIndex];
+            if (!opt) { info.style.display = 'none'; return; }
+
+            const preco = parseFloat(opt.dataset.preco);
+            let html = '<strong>Tipo:</strong> ' + opt.dataset.tipo +
+                       '<br><strong>Diária:</strong> ' + moeda(preco);
+
+            const dias = Math.round((new Date(saida.value) - new Date(entrada.value)) / 86400000);
+            if (dias > 0) {
+                html += '<br><strong>' + dias + ' diária(s):</strong> ' + moeda(preco * dias);
+            }
+            info.innerHTML = html;
+        }
+
+        quarto.addEventListener('change', atualizar);
+        entrada.addEventListener('change', atualizar);
+        saida.addEventListener('change', atualizar);
+        atualizar();
+    </script>
+}

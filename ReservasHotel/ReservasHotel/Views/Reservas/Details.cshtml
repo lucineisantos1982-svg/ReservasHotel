@@ -1,0 +1,21 @@
+﻿@model ReservasHotel.Models.Reserva
+@{
+    ViewData["Title"] = "Detalhes da reserva";
+}
+
+<h1>Detalhes da reserva</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">Hóspede</dt>
+    <dd class="col-sm-10">@Model.Hospede?.Nome</dd>
+    <dt class="col-sm-2">Quarto</dt>
+    <dd class="col-sm-10">@Model.Quarto?.Numero</dd>
+    <dt class="col-sm-2">Entrada</dt>
+    <dd class="col-sm-10">@Model.DataEntrada.ToString("dd/MM/yyyy")</dd>
+    <dt class="col-sm-2">Saída</dt>
+    <dd class="col-sm-10">@Model.DataSaida.ToString("dd/MM/yyyy")</dd>
+    <dt class="col-sm-2">Situação</dt>
+    <dd class="col-sm-10">@(Model.Cancelada ? "Cancelada" : "Ativa")</dd>
+</dl>
+
+<a asp-action="Index" class="btn btn-secondary">Voltar</a>

@@ -1,0 +1,33 @@
+﻿@model ReservasHotel.Models.Quarto
+@{
+    ViewData["Title"] = "Novo quarto";
+}
+
+<h1>Novo quarto</h1>
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Numero" class="form-label">Número</label>
+                <input asp-for="Numero" class="form-control" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Preco" class="form-label">Preço da diária</label>
+                <input asp-for="Preco" class="form-control" />
+                <span asp-validation-for="Preco" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TipoQuartoId" class="form-label">Tipo de quarto</label>
+                <select asp-for="TipoQuartoId" class="form-select" asp-items="ViewBag.TiposQuarto"></select>
+                <span asp-validation-for="TipoQuartoId" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model ReservasHotel.Models.Quarto
+@{
+    ViewData["Title"] = "Detalhes do quarto";
+}
+
+<h1>Detalhes do quarto</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">Número</dt>
+    <dd class="col-sm-10">@Model.Numero</dd>
+    <dt class="col-sm-2">Tipo</dt>
+    <dd class="col-sm-10">@Model.TipoQuarto?.Nome</dd>
+    <dt class="col-sm-2">Preço (diária)</dt>
+    <dd class="col-sm-10">@Model.Preco.ToString("C2")</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Voltar</a>

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ReservasHotel.Models.Reserva>
+@{
+    ViewData["Title"] = "Reservas";
+}
+
+<h1>Reservas</h1>
+
+<p><a asp-action="Create" class="btn btn-primary">Nova reserva</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Hóspede</th>
+            <th>Quarto</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Situação</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Hospede?.Nome</td>
+                <td>@item.Quarto?.Numero</td>
+                <td>@item.DataEntrada.ToString("dd/MM/yyyy")</td>
+                <td>@item.DataSaida.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if (item.Cancelada)
+                    {
+                        <span class="badge bg-danger">Cancelada</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Ativa</span>
+                    }
+                </td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                    @if (!item.Cancelada)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <form asp-action="Cancelar" asp-route-id="@item.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('Cancelar esta reserva?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Cancelar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
